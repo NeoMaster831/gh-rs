@@ -1,0 +1,14 @@
+C:\Users\last_\OneDrive\바탕 화면\CodeStuff-main\gh-rs\target\debug\deps\winapi-225dfe5236119adc.rmeta: C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\lib.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\macros.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\km\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\guiddef.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\ucrt\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\gl\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\vc\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\winrt\mod.rs
+
+C:\Users\last_\OneDrive\바탕 화면\CodeStuff-main\gh-rs\target\debug\deps\winapi-225dfe5236119adc.d: C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\lib.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\macros.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\km\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\guiddef.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\ucrt\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\gl\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\vc\mod.rs C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\winrt\mod.rs
+
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\lib.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\macros.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\km\mod.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\mod.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\shared\guiddef.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\ucrt\mod.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\mod.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\um\gl\mod.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\vc\mod.rs:
+C:\Users\last_\.cargo\registry\src\github.com-1ecc6299db9ec823\winapi-0.3.9\src\winrt\mod.rs:
