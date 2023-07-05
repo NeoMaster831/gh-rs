@@ -49,17 +49,13 @@ impl Proc {
 
     }
 
-    // Open it, and get modules info.
+    // Open it.
     pub fn open(&mut self) -> Option<Error> {
         if self.pid == 0 {
             return Some(Error::new(ErrorKind::InvalidData, "Process' PID is invalid!"))
         }
         self.handle = unsafe { OpenProcess(PROCESS_ALL_ACCESS, 0, self.pid) };
-        if self.handle == unsafe { zeroed() } {
-            return Some(Error::new(ErrorKind::Interrupted, "The procedure got interrupted. Maybe ac?"));
-        } else {
-            return None;
-        }
+        None
     }
 
     pub fn get_modules(&mut self) -> Option<Error> {
@@ -79,7 +75,7 @@ impl Proc {
             valid = unsafe { Module32Next(hd, &mut entry) };
         }
         None
-        
+
     }
 
 }
