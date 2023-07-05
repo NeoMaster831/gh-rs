@@ -6,7 +6,33 @@ use wn::ext::structs::Proc;
 fn main() {
     let mut newproc = Proc::new();
     match newproc.get_pid("Notepad.exe") {
-        Some(_) => println!("None of them found"),
+        Some(e) => {
+            println!("{}", e.to_string());
+            return;
+        },
         None => println!("{}", newproc.pid),
+    }
+
+    match newproc.open() {
+        Some(e) => {
+            println!("{}", e.to_string());
+            return;
+        },
+        None => println!("{:p}", newproc.handle),
+    }
+
+    if newproc.get_modules().is_some() {
+        println!("Hi Nigger");
+        return;
+    }
+
+    for i in newproc.modules {
+        for j in i.szModule {
+            if j == 0 {
+                break;
+            }
+            print!("{}", j as u8 as char);
+        }
+        println!();
     }
 }
