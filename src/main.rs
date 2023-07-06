@@ -1,8 +1,10 @@
 mod wn;
 mod lx;
 
+#[cfg(target_os = "windows")]
 use wn::ext::structs::Proc;
 
+#[cfg(target_os = "windows")]
 fn main() {
     let mut newproc = Proc::new();
     match newproc.get_pid("Notepad.exe") {
@@ -43,4 +45,9 @@ fn main() {
         }
         println!();
     }
+}
+
+#[cfg(target_os = "linux")]
+fn main() {
+    println!("Linux is not support at the moment");
 }
