@@ -25,6 +25,14 @@ fn main() {
         println!("Hi Nigger");
         return;
     }
+    let mut value = 0;
+    match newproc.read::<i32>(0x24BC9A4404C, &mut value) {
+        Some(e) => {
+            println!("{}", e.to_string());
+            return;
+        },
+        None => println!("{}", value),
+    }
 
     for i in newproc.modules {
         for j in i.szModule {
