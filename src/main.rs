@@ -28,12 +28,22 @@ fn main() {
         return;
     }
     let mut value = 0;
-    match newproc.read::<i32>(0x24BC9A4404C, &mut value) {
+    match newproc.read::<i32>(0x1CB07E4436C, &mut value) {
         Some(e) => {
             println!("{}", e.to_string());
             return;
         },
         None => println!("{}", value),
+    }
+    match newproc.write::<i32>(0x1CB07E4436C, &mut 1337) {
+        Some(e) => {
+            println!("{}", e.to_string());
+            return;
+        }
+        None => {
+            newproc.read::<i32>(0x1CB07E4436C, &mut value);
+            println!("{}", value);
+        }
     }
 
     for i in newproc.modules {
