@@ -10,5 +10,6 @@ winapi = { version = "0.3.9", features = [
     "winuser",
     "tlhelp32",
     "processthreadsapi",
-    "memoryapi"
+    "memoryapi",
+    "errhandlingapi"
     ] }

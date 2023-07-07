@@ -1,16 +1,13 @@
-use std::{io::*, mem::*};
+use std::{mem::*};
 
-use winapi::{vc::{vadefs::*}, um::{memoryapi::*}, shared::{ntdef::*, basetsd::*, minwindef::*}};
+use winapi::{vc::{vadefs::*}, um::{memoryapi::*, errhandlingapi::GetLastError}, shared::{ntdef::*, basetsd::*, minwindef::*}};
 
 use super::structs::Proc;
 
 impl Proc {
 
-    pub fn read<T>(&mut self, wh: uintptr_t, storeat: *mut T) -> Option<Error> {
-
-        if self.handle == unsafe { zeroed() } {
-            return Some(Error::new(std::io::ErrorKind::InvalidData, "Handle is invalid"));
-        }
+    // read mem. If error occurs, return last error. check msdn.
+    pub fn read<T>(&mut self, wh: uintptr_t, storeat: *mut T) -> Option<DWORD> {
 
         let res = unsafe {
             ReadProcessMemory(
@@ -23,17 +20,15 @@ impl Proc {
         };
 
         if res == 0 {
-            return Some(Error::new(ErrorKind::Other, "Couldn't read memory"));
+            let s = unsafe { GetLastError() };
+            return Some(s);
         }
         None
         
     }
 
-    pub fn write<T>(&mut self, wh: uintptr_t, what: *mut T) -> Option<Error> {
-        
-        if self.handle == unsafe { zeroed() } {
-            return Some(Error::new(std::io::ErrorKind::InvalidData, "Handle is invalid"));
-        }
+    // write mem. If error occurs, return last error. check msdn.
+    pub fn write<T>(&mut self, wh: uintptr_t, what: *mut T) -> Option<DWORD> {
 
         let res = unsafe {
             WriteProcessMemory(
@@ -46,12 +41,14 @@ impl Proc {
         };
 
         if res == 0 {
-            return Some(Error::new(ErrorKind::Other, "Couldn't write memory"));
+            let s = unsafe { GetLastError() };
+            return Some(s);
         }
         None
 
     }
 
     // TODO: add pattern search
-    
+    // TODO: add patch
+
 }
