@@ -1,5 +1,6 @@
 mod wn;
 mod lx;
+mod asm;
 
 #[cfg(target_os = "windows")]
 use wn::ext::structs::Proc;
