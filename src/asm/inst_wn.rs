@@ -1,3 +1,4 @@
+/*
 use std::any::Any;
 
 use winapi::{vc::{vadefs::*}};
@@ -7,7 +8,11 @@ struct Jmp {
 }
 
 impl Jmp {
-    fn translate(&self, base: uintptr_t) {
+    fn p(&self, base: uintptr_t) {
+
+    }
+    fn up(barr: &[u8]) -> Self {
         
     }
 }
+*/

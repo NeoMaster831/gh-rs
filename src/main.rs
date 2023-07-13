@@ -1,12 +1,14 @@
 mod wn;
 mod lx;
 mod asm;
+mod utils;
 
 #[cfg(target_os = "windows")]
 use wn::ext::structs::Proc;
 
 #[cfg(target_os = "windows")]
 fn main() {
+
     let mut newproc = Proc::new();
     match newproc.get_pid("Notepad.exe") {
         Some(e) => {
@@ -23,39 +25,12 @@ fn main() {
         },
         None => println!("{:p}", newproc.handle),
     }
+    
+    match newproc._pat_dump("o ".as_bytes(), "x?".as_bytes(), 0x0, "Dance Number Wo Tomo Ni".as_bytes()) {
+        Some(ptr) => println!("{:x}", ptr),
+        None => println!("error"),
+    };
 
-    if newproc.get_modules().is_some() {
-        println!("Hi Nigger");
-        return;
-    }
-    let mut value = 0;
-    match newproc.read::<i32>(0x1CB07E4436C, &mut value) {
-        Some(e) => {
-            println!("{}", e.to_string());
-            return;
-        },
-        None => println!("{}", value),
-    }
-    match newproc.write::<i32>(0x1CB07E4436C, &mut 1337) {
-        Some(e) => {
-            println!("{}", e.to_string());
-            return;
-        }
-        None => {
-            newproc.read::<i32>(0x1CB07E4436C, &mut value);
-            println!("{}", value);
-        }
-    }
-
-    for i in newproc.modules {
-        for j in i.szModule {
-            if j == 0 {
-                break;
-            }
-            print!("{}", j as u8 as char);
-        }
-        println!();
-    }
 }
 
 #[cfg(target_os = "linux")]
