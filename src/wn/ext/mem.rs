@@ -1,9 +1,8 @@
-use std::{mem::*, cmp::*};
+use std::mem::*;
 
-use num::Complex;
-use winapi::{vc::vadefs::*, um::{memoryapi::*, errhandlingapi::GetLastError}, shared::{ntdef::*, basetsd::*, minwindef::*}};
+use winapi::{vc::vadefs::*, um::{memoryapi::*, errhandlingapi::GetLastError, winnt::MEMORY_BASIC_INFORMATION}, shared::{ntdef::*, basetsd::*, minwindef::*}};
 
-use crate::utils::fft::{VPoly, Cpx, mul_poly};
+use crate::utils::alg::pat_fft;
 
 use super::structs::Proc;
 
@@ -79,7 +78,6 @@ impl Proc {
     }
 
     fn _pat_basic(&self, pat: &[u8], mask: &[u8], start: uintptr_t, size: SIZE_T) -> Result<Option<uintptr_t>, DWORD> {
-
         let length: usize = pat.len();
         let mut origin: Vec<u8> = vec![0; length];
         let store = origin.as_mut_ptr();
@@ -114,64 +112,46 @@ impl Proc {
 
     }
 
-    // use fft for **FASTER** search
-    // NlogM
-    // Wildcard is 0x0, +1 to every others.
-    pub fn _pat_dump(&self, pat: &[u8], mask: &[u8], start: uintptr_t, dump: &[u8]) -> Option<uintptr_t> {
+    fn _pat_dump(&self, pat: &[u8], mask: &[u8], start: uintptr_t, dump: &[u8]) -> Option<uintptr_t> {
+        return pat_fft(pat, mask, start, dump);
+    }
+
+    pub fn pat_scan(&self, pat: &[u8], mask: &[u8], start: uintptr_t, end: uintptr_t, mode: &str) -> Option<uintptr_t> {
+        let mut mbi = MEMORY_BASIC_INFORMATION { AllocationBase: unsafe { zeroed() }, RegionSize: 0, BaseAddress: unsafe { zeroed() }, AllocationProtect: 0, State: 0, Protect: 0, Type: 0 };
         
-        let mut mod_pat: Vec<u16> = vec![];
-        let mut mod_dump: Vec<u16> = vec![];
-        for i in 0..pat.len() {
-            let rev_idx = pat.len() - 1 - i;
-            mod_pat.push(match mask[rev_idx] {
-                b'?' => 0,
-                _ => pat[rev_idx] as u16 + 1,
-            });
-        } for i in 0..dump.len() {
-            mod_dump.push(dump[i] as u16 + 1);
-        }
-
-        for j in (0..dump.len()).step_by(pat.len()) {
-            let md_slice = &mod_dump.as_slice()[j..min(j + 2 * pat.len(), mod_dump.len())];
-            let mut t = vec![Vec::<Cpx>::new(); 4];
-            let mut s = vec![Vec::<Cpx>::new(); 4];
-
-            for i in 0..mod_pat.len() {
-                t[1].push(Complex{ re: mod_pat[i] as f64, im: 0.0 });
-            } for i in 0..md_slice.len() {
-                s[1].push(Complex{ re: md_slice[i] as f64, im: 0.0 });
+        let mut cur = start;
+        while cur < end {
+            cur += mbi.RegionSize;
+            if unsafe { VirtualQueryEx(self.handle, cur as LPCVOID, &mut mbi, size_of::<MEMORY_BASIC_INFORMATION>()) } == 0 || (
+                mbi.State != 0x1000 || 
+                mbi.Protect&0x100 != 0 ||
+                mbi.Protect&0x1 != 0
+            ) {
+                continue;
             }
 
-            for i in 0..s[1].len() {
-                let square = Complex{ re: s[1][i].re * s[1][i].re, im: 0.0 };
-                let cube = Complex{ re: square.re * s[1][i].re, im: 0.0 };
-                s[2].push(square); s[3].push(cube);
-            } for i in 0..t[1].len() {
-                let square = Complex{ re: t[1][i].re * t[1][i].re, im: 0.0 };
-                let cube = Complex{ re: square.re * t[1][i].re, im: 0.0 };
-                t[2].push(square); t[3].push(cube);
-            }
-
-            let mut r = vec![Vec::<Cpx>::new(); 4];
-            for k in 1..4 {
-                r[k] = mul_poly(&mut t[4 - k], &mut s[k]);
-            }
-
-            let mut check: VPoly = vec![];
-            for k in 0..r[1].len() {
-                check.push(Complex{re: r[1][k].re + -2.0 * r[2][k].re + r[3][k].re, im: 0.0});
-            }
-            for i in (pat.len() - 1)..md_slice.len() {
-                if check[i].re.abs() < 1e-6 {
-                    return Some(start + j + i - pat.len() + 1);
+            if mode == "basic" {
+                match self._pat_basic(pat, mask, cur, mbi.RegionSize) {
+                    Ok(res) => match res {
+                        Some(k) => return Some(k),
+                        None => (),
+                    }
+                    Err(_) => (),
+                }
+            } else if mode == "dump" {
+                match self.dump(cur, cur + mbi.RegionSize) {
+                    Ok(dump) => {
+                        match self._pat_dump(pat, mask, cur, dump.as_slice()) {
+                            Some(k) => return Some(k),
+                            None => (),
+                        }
+                    } Err(_) => (),
                 }
             }
         }
-        return None
-
+        None
     }
 
-    // TODO: add pattern search
     // TODO: add patch
 
 }

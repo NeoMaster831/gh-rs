@@ -1,10 +1,9 @@
-/*
 use std::any::Any;
 
 use winapi::{vc::{vadefs::*}};
 
 struct Jmp {
-    to: dyn Any // Operand 1
+    to: Box<dyn Any> // Operand 1
 }
 
 impl Jmp {
@@ -12,7 +11,6 @@ impl Jmp {
 
     }
     fn up(barr: &[u8]) -> Self {
-        
+        Jmp{to: Box::new(0x1337)}
     }
 }
-*/

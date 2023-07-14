@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use num::Complex;
 
 pub type Cpx = Complex<f64>;
@@ -11,11 +13,11 @@ pub fn fft(poly: SPoly, inverse: bool) {
         return;
     }
 
-    let mut even: VPoly = vec![Complex{ re: 0.0, im: 0.0 }; n / 2];
-    let mut odd: VPoly = vec![Complex{ re: 0.0, im: 0.0 }; n / 2];
+    let mut even: VPoly = vec![];
+    let mut odd: VPoly = vec![];
     for i in 0..(n/2) {
-        even[i] = poly[i * 2];
-        odd[i] = poly[i * 2 + 1];
+        even.push(poly[i * 2]);
+        odd.push(poly[i * 2 + 1]);
     }
 
     fft(even.as_mut_slice(), inverse);
@@ -28,7 +30,7 @@ pub fn fft(poly: SPoly, inverse: bool) {
 
     let mut w = Complex{ re: 1.0, im: 0.0 };
     let wn = Complex{ re: angle.cos(), im: angle.sin() };
-
+    
     for i in 0..(n/2) {
         let tmp = w * odd[i];
         poly[i] = even[i] + tmp;
